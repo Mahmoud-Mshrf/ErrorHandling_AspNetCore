@@ -27,7 +27,7 @@ namespace ErrorHandling_AspNetCore.Implementations
             var user = new User { Email = dto.Email, FullName = dto.FullName, PasswordHash = _hasher.HashPassword(null, dto.Password) };
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
-            return new ResultDto { IsSuccess = true, Message = $"User added successfully with id{user.Id}" };
+            return new ResultDto { IsSuccess = true, Message = $"User added successfully with id : {user.Id}" };
         }
     }
 }

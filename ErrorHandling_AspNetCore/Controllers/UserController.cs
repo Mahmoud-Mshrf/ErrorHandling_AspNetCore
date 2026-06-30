@@ -22,7 +22,7 @@ namespace ErrorHandling_AspNetCore.Controllers
             var result =await _userService.Register(dto);
             if (!result.IsSuccess)
             {
-                return BadRequest(result.Errors);
+                return ValidationProblem(detail: result.Errors[0],instance:HttpContext.Request.Path,statusCode:400,title:"User already exists",type:"blank:html",modelStateDictionary:ModelState);
             }
             return Ok(result.Message);
         }
