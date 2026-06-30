@@ -19,6 +19,7 @@ namespace ErrorHandling_AspNetCore
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
+            builder.Services.AddSwaggerGen();
             builder.Services.AddDbContext<AppDbContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
@@ -28,6 +29,8 @@ namespace ErrorHandling_AspNetCore
             if (app.Environment.IsDevelopment())
             {
                 app.MapOpenApi();
+                app.UseSwagger();
+                app.UseSwaggerUI();
             }
 
             app.UseHttpsRedirection();
