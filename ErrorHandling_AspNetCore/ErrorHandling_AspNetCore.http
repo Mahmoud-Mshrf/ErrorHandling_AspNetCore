@@ -1,0 +1,6 @@
+@ErrorHandling_AspNetCore_HostAddress = http://localhost:5157
+
+GET {{ErrorHandling_AspNetCore_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
