@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ErrorHandling_AspNetCore.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260630231025_initialCreate")]
+    [Migration("20260701164346_initialCreate")]
     partial class initialCreate
     {
         /// <inheritdoc />
@@ -24,7 +24,7 @@ namespace ErrorHandling_AspNetCore.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ErrorHandling_AspNetCore.Models.User", b =>
+            modelBuilder.Entity("ErrorHandling_AspNetCore.Models.Driver", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -32,21 +32,16 @@ namespace ErrorHandling_AspNetCore.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("DriverNumber")
+                        .HasColumnType("int");
 
                     b.Property<string>("FullName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PasswordHash")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Drivers");
                 });
 #pragma warning restore 612, 618
         }

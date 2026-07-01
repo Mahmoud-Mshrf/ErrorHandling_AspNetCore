@@ -20,10 +20,10 @@ namespace ErrorHandling_AspNetCore
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddProblemDetails();
+            //builder.Services.AddProblemDetails();
             builder.Services.AddDbContext<AppDbContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-            builder.Services.AddScoped<IUserService, UserService>();
-            builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+            builder.Services.AddScoped<IDriverService, DriverService>();
+            builder.Services.AddScoped<IPasswordHasher<Driver>, PasswordHasher<Driver>>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -33,8 +33,8 @@ namespace ErrorHandling_AspNetCore
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-            app.UseExceptionHandler();
-            app.UseStatusCodePages();
+            //app.UseExceptionHandler();
+            //app.UseStatusCodePages();
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
