@@ -1,4 +1,5 @@
 ﻿using ErrorHandling_AspNetCore.Dtos;
+using ErrorHandling_AspNetCore.Exceptions;
 using ErrorHandling_AspNetCore.Interfaces;
 using ErrorHandling_AspNetCore.Models;
 using Microsoft.AspNetCore.Http;
@@ -34,7 +35,7 @@ namespace ErrorHandling_AspNetCore.Controllers
             var result = await _userService.GetDriver(id);
             if (result == null)
             {
-                return NotFound();
+                throw new NotFoundException($"No user with id : {id}");
             }
             return Ok(result);
         }

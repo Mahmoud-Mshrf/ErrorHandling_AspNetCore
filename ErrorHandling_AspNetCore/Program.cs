@@ -1,5 +1,6 @@
 
 using ErrorHandling_AspNetCore.Data;
+using ErrorHandling_AspNetCore.Extensions;
 using ErrorHandling_AspNetCore.Implementations;
 using ErrorHandling_AspNetCore.Interfaces;
 using ErrorHandling_AspNetCore.Models;
@@ -35,6 +36,7 @@ namespace ErrorHandling_AspNetCore
             }
             //app.UseExceptionHandler();
             //app.UseStatusCodePages();
+            app.AddGlobalErrorHandlingMiddleware();
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
