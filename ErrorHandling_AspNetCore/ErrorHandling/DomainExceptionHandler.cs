@@ -34,7 +34,7 @@ namespace ErrorHandling_AspNetCore.ErrorHandling
                 Status=(int)statusCode
             };
             problem.Extensions["traceId"] = httpContext.TraceIdentifier;
-            problem.Extensions["errorCode"] = dex.ErrorCode;
+            //problem.Extensions["errorCode"] = dex.ErrorCode;
             var result =JsonSerializer.Serialize(problem);
             httpContext.Response.StatusCode = (int)statusCode;
             httpContext.Response.ContentType = "application/problem+json";
@@ -42,4 +42,5 @@ namespace ErrorHandling_AspNetCore.ErrorHandling
             return true;
         }
     }
+
 }

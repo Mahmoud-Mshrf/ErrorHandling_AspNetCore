@@ -1,5 +1,6 @@
 
 using ErrorHandling_AspNetCore.Data;
+using ErrorHandling_AspNetCore.ErrorHandling;
 using ErrorHandling_AspNetCore.Extensions;
 using ErrorHandling_AspNetCore.Implementations;
 using ErrorHandling_AspNetCore.Interfaces;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace ErrorHandling_AspNetCore
 {
@@ -23,7 +25,19 @@ namespace ErrorHandling_AspNetCore
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddProblemDetails();
+            builder.Services.AddProblemDetails(options =>
+            {
+                options.CustomizeProblemDetails = ctx =>
+                {
+                    ctx.ProblemDetails.Extensions["traceId"] =
+                        Activity.Current?.Id ?? ctx.HttpContext.TraceIdentifier;
+                };
+            });
+            builder.Services.AddExceptionHandler<ValidationExceptionHandler>();
+            builder.Services.AddExceptionHandler<DomainExceptionHandler>();
+            builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+
+
             builder.Services.AddDbContext<AppDbContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             builder.Services.AddScoped<IDriverService, DriverService>();
             builder.Services.AddScoped<IPasswordHasher<Driver>, PasswordHasher<Driver>>();
@@ -80,9 +94,9 @@ namespace ErrorHandling_AspNetCore
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-            //app.UseExceptionHandler();
+            app.UseExceptionHandler();
             //app.UseStatusCodePages();
-            app.AddGlobalErrorHandlingMiddleware();
+            //app.AddGlobalErrorHandlingMiddleware();
             //app.UseStatusCodePagesWithReExecute("/error/{0}");
             app.UseStatusCodePages();
             //app.Map("/error/{statusCode:int}", (int statusCode, HttpContext ctx) =>
