@@ -37,7 +37,7 @@ namespace ErrorHandling_AspNetCore.Controllers
             var result = await _userService.GetDriver(id);
             if (result == null)
             {
-                throw new NotFoundException($"No user with id : {id}");
+                throw new NotFoundException("Driver",id);
             }
             return Ok(result);
         }

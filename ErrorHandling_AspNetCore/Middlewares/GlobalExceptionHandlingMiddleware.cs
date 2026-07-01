@@ -36,11 +36,10 @@ namespace ErrorHandling_AspNetCore.Middlewares
 
             var (statusCode, title, detail,type) = exceptionType switch
             {
-                NotFoundException nfe => (HttpStatusCode.NotFound, "Not Found", nfe.Message,"about:blank"),
-                Exceptions.NotImplementedException nie => (HttpStatusCode.NotImplemented,"Not Implemented", nie.Message, "about:blank"),
-                Exceptions.KeyNotFoundException nkfe => (HttpStatusCode.NotFound, "Key Not Found", nkfe.Message, "about:blank"),
-                UnauthorizedAccessException uae => (HttpStatusCode.Unauthorized, "Unauthorized", uae.Message, "about:blank"),
-                BadRequestException bre => (HttpStatusCode.BadRequest, "Bad Request", bre.Message, "about:blank"),
+                NotFoundException nfe => (HttpStatusCode.NotFound, nfe.Title, nfe.Message,"about:blank"),
+                Exceptions.NotImplementedException nie => (HttpStatusCode.NotImplemented,nie.Title, nie.Message, "about:blank"),
+                UnauthorizedException uae => (HttpStatusCode.Unauthorized,uae.Title , uae.Message, "about:blank"),
+                BadRequestException bre => (HttpStatusCode.BadRequest, bre.Title, bre.Message, "about:blank"),
                 _ => (HttpStatusCode.InternalServerError, "Internal Server Error", ex.Message, "about:blank")
             };
             var problem = new ProblemDetails

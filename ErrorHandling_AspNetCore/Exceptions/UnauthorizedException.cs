@@ -1,8 +1,10 @@
 ﻿namespace ErrorHandling_AspNetCore.Exceptions
 {
-    public class UnauthorizedException : Exception
+    public class UnauthorizedException : DomainException
     {
-        public UnauthorizedException(string msg) : base(msg)
+        public UnauthorizedException(string action)
+        : base("Forbidden", $"Access denied for '{action}'","FORBIDDEN")
+
         {
 
         }
