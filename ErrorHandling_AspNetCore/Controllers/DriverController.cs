@@ -32,17 +32,16 @@ namespace ErrorHandling_AspNetCore.Controllers
         public async Task<IActionResult> GetAsync([Required] int id)
         {
             var result = await _userService.GetDriver(id);
-
+            if (result == null)
+            {
+                return NotFound();
+            }
             return Ok(result);
         }
         [HttpGet("get-drivers")]
         public async Task<IActionResult> UpdateDriver()
         {
             var result = await _userService.GetDrivers();
-            if (result==null)
-            {
-                return NotFound();
-            }
             return Ok(result);
         }
         [HttpPut("update-driver")]
