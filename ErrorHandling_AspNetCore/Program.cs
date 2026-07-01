@@ -23,7 +23,7 @@ namespace ErrorHandling_AspNetCore
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
             builder.Services.AddSwaggerGen();
-            //builder.Services.AddProblemDetails();
+            builder.Services.AddProblemDetails();
             builder.Services.AddDbContext<AppDbContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             builder.Services.AddScoped<IDriverService, DriverService>();
             builder.Services.AddScoped<IPasswordHasher<Driver>, PasswordHasher<Driver>>();
@@ -83,22 +83,23 @@ namespace ErrorHandling_AspNetCore
             //app.UseExceptionHandler();
             //app.UseStatusCodePages();
             app.AddGlobalErrorHandlingMiddleware();
-            app.UseStatusCodePagesWithReExecute("/error/{0}");
-            app.Map("/error/{statusCode:int}", (int statusCode, HttpContext ctx) =>
-            {
-                var problem = new ProblemDetails
-                {
-                    Status = statusCode,
-                    Title = statusCode switch
-                    {
-                        404 => "Resource Not Found",
-                        405 => "Method Not Allowed",
-                        _ => "Error"
-                    },
-                    Instance = ctx.Request.Path
-                };
-                return Results.Problem(problem);
-            });
+            //app.UseStatusCodePagesWithReExecute("/error/{0}");
+            app.UseStatusCodePages();
+            //app.Map("/error/{statusCode:int}", (int statusCode, HttpContext ctx) =>
+            //{
+            //    var problem = new ProblemDetails
+            //    {
+            //        Status = statusCode,
+            //        Title = statusCode switch
+            //        {
+            //            404 => "Resource Not Found",
+            //            405 => "Method Not Allowed",
+            //            _ => "Error"
+            //        },
+            //        Instance = ctx.Request.Path
+            //    };
+            //    return Results.Problem(problem);
+            //});
 
             app.UseHttpsRedirection();
             app.UseAuthentication();
