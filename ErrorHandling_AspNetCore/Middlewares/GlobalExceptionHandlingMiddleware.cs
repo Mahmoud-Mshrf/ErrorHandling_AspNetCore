@@ -1,4 +1,5 @@
 ﻿using ErrorHandling_AspNetCore.Exceptions;
+using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Text.Json;
 
@@ -33,19 +34,27 @@ namespace ErrorHandling_AspNetCore.Middlewares
 
             var exceptionType = ex;
 
-            var (statusCode, stackTrace, message) = exceptionType switch
+            var (statusCode, title, detail,type) = exceptionType switch
             {
-                NotFoundException nfe => (HttpStatusCode.NotFound, nfe.StackTrace, nfe.Message),
-                Exceptions.NotImplementedException nie => (HttpStatusCode.NotImplemented, nie.StackTrace, nie.Message),
-                Exceptions.KeyNotFoundException nkfe => (HttpStatusCode.NotFound, nkfe.StackTrace, nkfe.Message),
-                UnauthorizedAccessException uae => (HttpStatusCode.NotFound, uae.StackTrace, uae.Message),
-                BadRequestException bre => (HttpStatusCode.NotFound, bre.StackTrace, bre.Message),
-                _ => (HttpStatusCode.InternalServerError, ex.StackTrace, ex.Message)
+                NotFoundException nfe => (HttpStatusCode.NotFound, "Not Found", nfe.Message,"about:blank"),
+                Exceptions.NotImplementedException nie => (HttpStatusCode.NotImplemented,"Not Implemented", nie.Message, "about:blank"),
+                Exceptions.KeyNotFoundException nkfe => (HttpStatusCode.NotFound, "Key Not Found", nkfe.Message, "about:blank"),
+                UnauthorizedAccessException uae => (HttpStatusCode.Unauthorized, "Unauthorized", uae.Message, "about:blank"),
+                BadRequestException bre => (HttpStatusCode.BadRequest, "Bad Request", bre.Message, "about:blank"),
+                _ => (HttpStatusCode.InternalServerError, "Internal Server Error", ex.Message, "about:blank")
             };
-
-            var exceptionResult = JsonSerializer.Serialize(new { error = message, stackTrace });
+            var problem = new ProblemDetails
+            {
+                Type = type,
+                Title = title,
+                Status =(int) statusCode,
+                Detail = detail,
+                Instance = context.Request.Path
+            };
+            problem.Extensions["traceId"] = context.TraceIdentifier;
+            var exceptionResult = JsonSerializer.Serialize(problem);
             context.Response.StatusCode = (int)statusCode;
-
+            context.Response.ContentType = "application/problem+json";
             await context.Response.WriteAsync(exceptionResult);
         }
     }

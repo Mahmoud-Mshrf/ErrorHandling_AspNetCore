@@ -4,6 +4,7 @@ using ErrorHandling_AspNetCore.Extensions;
 using ErrorHandling_AspNetCore.Implementations;
 using ErrorHandling_AspNetCore.Interfaces;
 using ErrorHandling_AspNetCore.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,6 +26,7 @@ namespace ErrorHandling_AspNetCore
             builder.Services.AddDbContext<AppDbContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             builder.Services.AddScoped<IDriverService, DriverService>();
             builder.Services.AddScoped<IPasswordHasher<Driver>, PasswordHasher<Driver>>();
+            //builder.Services.AddAuthentication().AddJwtBearer(JwtBearerDefaults.AuthenticationScheme);
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -38,9 +40,9 @@ namespace ErrorHandling_AspNetCore
             //app.UseStatusCodePages();
             app.AddGlobalErrorHandlingMiddleware();
             app.UseHttpsRedirection();
+            app.UseAuthentication();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 

@@ -2,6 +2,7 @@
 using ErrorHandling_AspNetCore.Exceptions;
 using ErrorHandling_AspNetCore.Interfaces;
 using ErrorHandling_AspNetCore.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -29,6 +30,7 @@ namespace ErrorHandling_AspNetCore.Controllers
             //}
             return Ok(result);
         }
+        //[Authorize]
         [HttpGet("get-driver")]
         public async Task<IActionResult> GetAsync([Required] int id)
         {
