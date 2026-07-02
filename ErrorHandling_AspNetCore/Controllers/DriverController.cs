@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using ValidationException = ErrorHandling_AspNetCore.Exceptions.ValidationException;
 
 namespace ErrorHandling_AspNetCore.Controllers
 {
@@ -21,7 +22,7 @@ namespace ErrorHandling_AspNetCore.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> RegisterAsync(Driver driver)
+        public async Task<IActionResult> RegisterAsync([FromBody]Driver driver)
         {
             var result =await _userService.Register(driver);
             //if (!result.IsSuccess)
@@ -58,6 +59,13 @@ namespace ErrorHandling_AspNetCore.Controllers
         {
             var result = await _userService.DeleteDriver(id);
             return Ok(result);
+        }
+        [Authorize]
+        [HttpGet("get-exception")]
+        public async Task<IActionResult> ProbagateException()
+        {
+            throw new Exception("Test Exception");
+            //return NotFound();
         }
     }
 }

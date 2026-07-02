@@ -1,6 +1,7 @@
 ﻿using ErrorHandling_AspNetCore.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace ErrorHandling_AspNetCore.ErrorHandling
 {
@@ -16,13 +17,13 @@ namespace ErrorHandling_AspNetCore.ErrorHandling
             {
                 Type = "https://myapi.com/errors/validation",
                 Title = "Validation Failed",
-                Status = 422,
+                Status =(int) HttpStatusCode.BadRequest,
                 Detail = vex.Message,
                 Instance = ctx.Request.Path
             };
             problem.Extensions["traceId"] = ctx.TraceIdentifier;
 
-            ctx.Response.StatusCode = 422;
+            ctx.Response.StatusCode = (int)HttpStatusCode.BadRequest;
             ctx.Response.ContentType = "application/problem+json";
 
             await ctx.Response.WriteAsJsonAsync(problem, ct);

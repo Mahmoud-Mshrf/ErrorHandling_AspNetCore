@@ -18,6 +18,16 @@ namespace ErrorHandling_AspNetCore.ErrorHandling
             HttpContext ctx, Exception ex, CancellationToken ct)
         {
 
+            //await Results.Problem(type : "https://tools.ietf.org/html/rfc9110#section-15.6.1",
+            //    title : "An unexpected error occurred.",
+            //    statusCode : 500,
+            //    detail : _env.IsDevelopment() ? ex.Message : "Please contact support.",
+            //    instance : ctx.Request.Path,
+            //    extensions:new Dictionary<string, object?>()
+            //    {
+            //        {"traceId",ctx.TraceIdentifier }
+            //    }).ExecuteAsync(ctx);
+            //return true;
             var problem = new ProblemDetails
             {
                 Type = "https://tools.ietf.org/html/rfc9110#section-15.6.1",

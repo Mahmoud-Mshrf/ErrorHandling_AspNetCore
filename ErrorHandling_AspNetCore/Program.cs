@@ -33,6 +33,7 @@ namespace ErrorHandling_AspNetCore
                         Activity.Current?.Id ?? ctx.HttpContext.TraceIdentifier;
                 };
             });
+            
             builder.Services.AddExceptionHandler<ValidationExceptionHandler>();
             builder.Services.AddExceptionHandler<DomainExceptionHandler>();
             builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
@@ -95,10 +96,10 @@ namespace ErrorHandling_AspNetCore
                 app.UseSwaggerUI();
             }
             app.UseExceptionHandler();
-            //app.UseStatusCodePages();
+            app.UseStatusCodePages();
             //app.AddGlobalErrorHandlingMiddleware();
             //app.UseStatusCodePagesWithReExecute("/error/{0}");
-            app.UseStatusCodePages();
+            //app.UseStatusCodePages();
             //app.Map("/error/{statusCode:int}", (int statusCode, HttpContext ctx) =>
             //{
             //    var problem = new ProblemDetails
